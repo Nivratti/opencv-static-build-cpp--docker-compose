@@ -1,107 +1,5 @@
-# # https://hub.docker.com/_/ubuntu/
-# ARG UBUNTU_VERSION=20.04
-# ARG OPENCV_VERSION=4.5.4
-
-# FROM ubuntu:$UBUNTU_VERSION
-
-# RUN apt-get update && apt-get install -y --no-install-recommends
-
-# # ENV TZ=Europe/London
-# # RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-# # ---------------------------
-# # | INSTALL ADDITIONAL APTs |
-# # ---------------------------
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-#     build-essential \
-#     git \
-#     curl \
-#     ca-certificates \
-#     ssh \
-#     nano \
-#     htop \
-#     unzip \
-#     wget \
-#     apt-transport-https \
-#     ca-certificates
-
-
-# ###################
-# RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-#     pkg-config \
-#     cmake
-
-# RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-#     libx11-dev \
-#     libxft-dev \
-#     autoconf \
-#     libtool \
-#     bison \
-#     gperf \
-#     libgles2-mesa-dev \
-#     libxext-dev \
-#     libxrandr-dev \
-#     libxi-dev \
-#     libxcursor-dev \
-#     libxdamage-dev \
-#     libxinerama-dev
-
-# RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-#     curl \
-#     git \
-#     tar \
-#     zip \
-#     unzip
-
-# RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-#     python3 \
-#     python3-pip 
-
-# RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-#     autoconf \
-#     automake \
-#     libtool
-
-# ## 
-# RUN git clone https://github.com/Microsoft/vcpkg.git /opt/vcpkg
-# WORKDIR /opt/vcpkg
-
-# RUN ./bootstrap-vcpkg.sh \
-#     && ./vcpkg integrate install \
-#     && ./vcpkg integrate bash \
-#     && echo 'export PATH=$PATH:/opt/vcpkg' >>~/.bashrc
-
-# # WORKDIR /root
-
-# # ARG build_parent_dir='/usr/local/c++'
-
-# # # git checkout 54f55a526804f99a1eb4c798ccd085e8dab74492 -- opencv 4.5.4 port
-# # RUN echo $build_parent_dir && \
-# #     mkdir -p ${build_parent_dir} && \
-# #     chmod -R 777 ${build_parent_dir} && \
-# #     cd ${build_parent_dir} && \
-# #     git clone https://github.com/Microsoft/vcpkg.git && \
-# #     cd vcpkg && git checkout 54f55a526804f99a1eb4c798ccd085e8dab74492 && \
-# #     ./bootstrap-vcpkg.sh && \
-# #     ./vcpkg integrate install && \
-# #     ./vcpkg install crow && \
-# #     ./vcpkg install numcpp && \
-# #     ./vcpkg install opencv4[dnn]
-
-
-# RUN ls
-
-# # # | SETUP WORKSPACE |
-# # # -------------------
-# # WORKDIR /workspace
-
-# # COPY run.sh /
-# # RUN chmod +x /run.sh
-# # CMD "/run.sh"
-
-# CMD ["bash"]
-
 FROM ubuntu:18.04
+
 # Update the system so that the public apt repositry locations are visible
 RUN apt update -y && apt upgrade -y
 
@@ -142,7 +40,10 @@ RUN cd ~/opencv_build/opencv/build && \
 RUN cd ~/opencv_build/opencv/build && \
     make -j5 && make install 
 
-# RUN rm -rf ~/opencv_build
+# -------------------------------------------------
+# | remove build files after setup                |
+# -------------------------------------------------
+RUN rm -rf ~/opencv_build
 
 RUN ls
 
